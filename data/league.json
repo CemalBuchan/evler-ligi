@@ -31,7 +31,7 @@
     {"round": 15, "devre": 3, "start": "2027-03-29", "end": "2027-04-09"}
   ],
   "matches": [
-    {"id": "m01", "round": 1, "home": "psg", "away": "city", "venue": "Vermo", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
+    {"id": "m01", "round": 1, "home": "psg", "away": "city", "venue": "Vermo", "homeGoals": 3, "awayGoals": 5, "status": "oynandı", "postponedBy": null, "playedOn": "2026-10-04", "forfeitWinner": null, "scorers": [{"team": "psg", "player": "Alparslan", "goals": 2}, {"team": "psg", "player": "İsmail", "goals": 1}, {"team": "city", "player": "Davut", "goals": 3}, {"team": "city", "player": "Cemal", "goals": 2}]},
     {"id": "m02", "round": 1, "home": "real", "away": "bayern", "venue": "Çınar", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
     {"id": "m03", "round": 1, "home": "barca", "away": "inter", "venue": "Suurpelto", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
     {"id": "m04", "round": 2, "home": "city", "away": "inter", "venue": "Suurpelto", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
