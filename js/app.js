@@ -25,6 +25,8 @@
       today: L.todayISO(),
       table: L.standings(I),
       post: L.postponeInfo(I),
+      scorers: L.scorerTable(I),
+      admin: !!(window.Admin && window.Admin.active()),
     };
     S.cur = L.currentRound(I, S.today);
   }
@@ -82,9 +84,18 @@
   pick.addEventListener('change', () => { if (pick.value) choose(pick.value); });
   window.addEventListener('hashchange', () => render(false));
 
+  /* Admin modülü yeni veriyi buradan yükler (kayıttan sonra / girişte). */
+  window.EvlerApp = {
+    state: () => S,
+    load(league) { build(league); fillPicker(); render(true); },
+  };
+
   fetch('data/league.json', { cache: 'no-cache' })
     .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then((league) => { build(league); fillPicker(); render(false); })
+    .then((league) => {
+      build(league); fillPicker(); render(false);
+      if (window.Admin) window.Admin.restore();
+    })
     .catch((err) => {
       app.innerHTML = '<div class="errbox"><h2>Veri yüklenemedi</h2><p>data/league.json okunamadı (' + V.esc(err.message) +
         ').</p><p>Dosyayı çift tıklayıp açtıysan olmaz; yerel sunucu gerekir:<br><code>python -m http.server 8000</code> ve <code>http://localhost:8000</code></p>' +

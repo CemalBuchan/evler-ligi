@@ -11,7 +11,7 @@ js/app.js           yönlendirme, "takımım" hafızası
 data/league.json    TÜM LİG VERİSİ (sadece bunu düzenlersin)
 ```
 
-## Veriyi GitHub'dan düzenleme
+## Veriyi GitHub'dan elle düzenleme
 
 1. GitHub'da repoyu aç → `data` → `league.json` → sağ üstte **kalem (Edit)** simgesi.
 2. `Ctrl+F` ile maçı bul (ör. `"id": "m07"`). Her maç tek satırdır.
@@ -59,6 +59,14 @@ Puan, averaj, atılan gol ve ikili maçlar da eşit bırakırsa tabloda ilgili t
 "tiebreakOverrides": [["inter", "bayern"]],
 ```
 
+### Gol atanlar (elle)
+
+Oynanan maçın `scorers` listesine yazılır (skor yine `homeGoals`/`awayGoals`'dan gelir; liste toplamı skordan küçük olabilir):
+
+```json
+"scorers": [{"team": "psg", "player": "Alparslan", "goals": 2}]
+```
+
 ### Oyuncu isimleri
 
 `teams` altında ilgili takımın `players` dizisini doldur:
@@ -70,6 +78,32 @@ Puan, averaj, atılan gol ve ikili maçlar da eşit bırakırsa tabloda ilgili t
 ### Takım id'leri
 
 `psg`, `real`, `inter`, `bayern`, `barca`, `city`
+
+## Admin modu (sitenin içinden skor girme)
+
+Sağ altta soluk bir **kilit** düğmesi var. Giriş yapınca her maçta **"Maçı düzenle"** çıkar: durum (bekliyor / oynandı / ertelendi / hükmen), skor, **gol atan oyuncular**, erteleyen takım, hükmen sonucu, tarih ve maçın evi ayarlanır. **Kaydet** deyince değişiklik `data/league.json`'a otomatik commit olur ve 1–2 dakikada herkese yansır. Elle JSON düzenlemene gerek kalmaz (istersen yine yapabilirsin).
+
+**Nasıl çalışıyor:** Sunucu olmadığı için kaydetme GitHub üzerinden yapılır. Yazma izni olan bir GitHub token'ı, **seçtiğin kullanıcı adı + parola ile şifrelenip** `data/admin.json` olarak repoya konur. Siteye bu kullanıcı adı ve parolayı giren herkes admin olur; site token'ın şifresini çözüp kaydı yapar. Düz metin token ya da parola repoda yoktur.
+
+> **Dikkat:** Parola basitse (ör. `ruhi123`) şifre bilgisayarla kolayca kırılabilir; bilen biri token'ı çıkarıp repoyu değiştirebilir. Zararı sadece bu repoyla sınırlı (token'ı aşağıdaki gibi tek repoya ve sadece Contents iznine kısıtla). Arkadaş ligi için yeterli bir tercih; istersen daha uzun bir parola seç.
+
+**İlk kurulum (bir kez)**
+1. Aşağıdaki gibi bir token oluştur.
+2. Yayındaki sitede kilit düğmesi → **İlk kurulum (sadece bir kez)** → token'ı, repoyu (`kullanici/evler-ligi`, otomatik dolar) ve seçeceğin **admin kullanıcı adı + parolasını** yaz → **Kurulumu yap**.
+3. Bir dakika sonra yukarıdaki forma bu kullanıcı adı + parolayla giriş yap.
+
+Parolayı değiştirmek ya da token süresi dolunca yenilemek için aynı kurulumu yeni bilgilerle tekrarla.
+
+**Token oluşturma (bir kez, ~2 dk)**
+1. GitHub → sağ üst profil → **Settings** → en altta **Developer settings** → **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
+2. Token name: `evler-ligi-admin`. Expiration: istediğin süre (ör. 1 yıl).
+3. **Repository access** → *Only select repositories* → sadece `evler-ligi`.
+4. **Permissions** → *Repository permissions* → **Contents: Read and write**.
+5. **Generate token**; çıkan `github_pat_...` kodunu kopyala (bir daha gösterilmez) ve kurulum formundaki "GitHub token" alanına yapıştır.
+
+"Bu cihazda hatırla" işaretliyse oturum o telefonun tarayıcısında saklanır, bir daha sorulmaz. Başkasının cihazında işaretleme; **Çıkış** düğmesi (sarı şerit) oturumu siler. Token kaybolursa ya da sızarsa GitHub'dan silip yenisini üretip kurulumu tekrarla.
+
+**Gol atanlar:** skor girerken oyuncuların yanındaki **+** ile golü yaz; takımın skoru kendiliğinden artar. Kendi kalesine gol gibi kimin attığı belli olmayan goller için üstteki takım skorunu **+** ile artır. "Gol krallığı" Tablo ve Ana sayfada, oyuncunun gol sayısı da takım sayfasında görünür.
 
 ## Yerelde çalıştırma
 

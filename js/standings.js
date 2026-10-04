@@ -171,8 +171,38 @@
     return I.matches.filter((m) => result(m)).sort(byDate(I)).reverse().slice(0, n);
   }
 
+  /* Gol krallığı: sadece "oynandı" maçlardaki scorers kayıtları sayılır. */
+  function scorerTable(I) {
+    const goals = {}, games = {};
+    I.matches.forEach((m) => {
+      if (m.status !== 'oynandı') return;
+      games[m.home] = (games[m.home] || 0) + 1;
+      games[m.away] = (games[m.away] || 0) + 1;
+      (m.scorers || []).forEach((s) => {
+        const k = s.team + '|' + s.player;
+        goals[k] = (goals[k] || 0) + (s.goals || 0);
+      });
+    });
+    const rows = [], seen = {};
+    I.league.teams.forEach((t) => (t.players || []).forEach((p) => {
+      const k = t.id + '|' + p;
+      seen[k] = true;
+      rows.push({ team: t.id, player: p, goals: goals[k] || 0, games: games[t.id] || 0 });
+    }));
+    Object.keys(goals).forEach((k) => {
+      if (seen[k]) return;
+      const [team, player] = k.split('|');
+      rows.push({ team, player, goals: goals[k], games: games[team] || 0 });
+    });
+    rows.sort((a, b) => b.goals - a.goals || a.games - b.games || a.player.localeCompare(b.player, 'tr'));
+    rows.forEach((r, i) => {
+      r.rank = i > 0 && rows[i - 1].goals === r.goals && rows[i - 1].games === r.games ? rows[i - 1].rank : i + 1;
+    });
+    return rows;
+  }
+
   global.Lig = {
     fmtDate, fmtRange, todayISO, buildIndex, result, standings, postponeInfo,
-    currentRound, teamMatches, nextMatch, postponedMatches, recentPlayed, matchDate,
+    currentRound, teamMatches, nextMatch, postponedMatches, recentPlayed, matchDate, scorerTable,
   };
 })(window);

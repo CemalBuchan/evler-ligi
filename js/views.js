@@ -53,14 +53,34 @@
     const cls = ['match', 'st-' + (m.status === 'oynandı' ? 'oynandi' : m.status === 'hükmen' ? 'hukmen' : m.status === 'ertelendi' ? 'ertelendi' : 'bekliyor')];
     if (mine) cls.push('is-mine');
     const hw = r && r.hg > r.ag, aw = r && r.ag > r.hg;
+    const edit = S.admin ? '<button class="edit" data-edit="' + esc(m.id) + '">✎ Maçı düzenle</button>' : '';
     return '<div class="' + cls.join(' ') + '">' +
       '<div class="side home' + (hw ? ' win' : '') + '">' + badge(S, m.home, 'sm') + teamLink(S, m.home) + '</div>' +
       mid +
       '<div class="side away' + (aw ? ' win' : '') + '">' + teamLink(S, m.away) + badge(S, m.away, 'sm') + '</div>' +
+      scorersRow(m) +
       '<div class="meta">' + PIN + '<b>' + esc(m.venue) + '</b>' +
       (rd.devre === 3 ? '<em>tarafsız</em>' : '') +
-      '<span class="dot">·</span><span>' + (opt.showRound ? m.round + '. hafta · ' : '') + when + '</span>' + tags.join('') + '</div>' +
+      '<span class="dot">·</span><span>' + (opt.showRound ? m.round + '. hafta · ' : '') + when + '</span>' + tags.join('') + '</div>' + edit +
       '</div>';
+  }
+
+  /* Maç satırının altındaki golcüler: ev sahibi solda, deplasman sağda. */
+  function scorersRow(m) {
+    if (m.status !== 'oynandı' || !m.scorers || !m.scorers.length) return '';
+    const fmt = (team) => m.scorers.filter((x) => x.team === team && x.goals > 0)
+      .map((x) => esc(x.player) + (x.goals > 1 ? ' ×' + x.goals : '')).join(', ');
+    const h = fmt(m.home), a = fmt(m.away);
+    if (!h && !a) return '';
+    return '<div class="gs home">' + (h ? '⚽ ' + h : '') + '</div><span></span><div class="gs away">' + (a ? a + ' ⚽' : '') + '</div>';
+  }
+
+  /* Gol krallığı listesi. */
+  function scorerList(S, rows) {
+    return '<div class="sclist">' + rows.map((r) =>
+      '<a class="scr' + (r.goals ? '' : ' zero') + '" href="#/takim/' + esc(r.team) + '"><span class="c-rk">' + r.rank + '</span>' +
+      badge(S, r.team, 'sm') + '<span class="scn"><b>' + esc(r.player) + '</b><small>' + esc(teamName(S, r.team)) + '</small></span>' +
+      '<span class="scg">' + r.goals + '<small>gol</small></span></a>').join('') + '</div>';
   }
 
   /* ---------- puan tablosu ---------- */
@@ -131,6 +151,9 @@
     out += section('Puan durumu · ilk 3', tableHTML(S, S.table.slice(0, 3), { mini: true }) +
       '<a class="more" href="#/tablo">Tüm tablo →</a>');
 
+    const top = S.scorers.filter((r) => r.goals > 0).slice(0, 3);
+    if (top.length) out += section('Gol krallığı · ilk 3', scorerList(S, top) + '<a class="more" href="#/tablo">Tüm liste →</a>');
+
     const rec = L.recentPlayed(S.I, 5);
     out += section('Son oynanan maçlar', rec.length
       ? '<div class="matches">' + rec.map((m) => matchRow(S, m, { showRound: true })).join('') + '</div>'
@@ -189,7 +212,8 @@
     return '<h1 class="ph">Puan tablosu</h1>' + tableHTML(S, S.table) +
       '<p class="legend">O oynanan · G galibiyet · B beraberlik · M mağlubiyet · AG atılan · YG yenilen · AV averaj · P puan</p>' +
       '<p class="legend">Eşitlikte sıra: puan → averaj → atılan gol → ikili maçlar → penaltı sonucu.' +
-      (S.table.some((r) => r.tied) ? ' <b>=</b> işaretli takımlar arasındaki eşitlik elle (penaltı) belirlenecek.' : '') + '</p>';
+      (S.table.some((r) => r.tied) ? ' <b>=</b> işaretli takımlar arasındaki eşitlik elle (penaltı) belirlenecek.' : '') + '</p>' +
+      section('Gol krallığı', S.scorers.some((r) => r.goals > 0) ? scorerList(S, S.scorers) : '<p class="empty">Henüz gol atan yok.</p>');
   }
 
   /* ---------- Takım ---------- */
@@ -218,7 +242,10 @@
     const avg = (v) => (o ? (v / o).toFixed(2).replace('.', ',') : '–');
     const av = row.av > 0 ? '+' + row.av : String(row.av);
     const players = t.players && t.players.length
-      ? '<ul class="players">' + t.players.map((n) => '<li>' + esc(n) + '</li>').join('') + '</ul>'
+      ? '<ul class="players">' + t.players.map((n) => {
+        const g = S.scorers.find((r) => r.team === id && r.player === n);
+        return '<li><span>' + esc(n) + '</span><b>' + (g ? g.goals : 0) + ' gol</b></li>';
+      }).join('') + '</ul>'
       : '<p class="empty">Oyuncular henüz eklenmedi.</p>';
     const mk = S.my === id;
 
