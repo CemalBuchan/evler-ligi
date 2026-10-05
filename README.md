@@ -56,7 +56,7 @@ Telafide oynanmayan ertelenmiş maçta `postponedBy` genelde zaten doludur; enge
 Puan, averaj, atılan gol ve ikili maçlar da eşit bırakırsa tabloda ilgili takımlarda `=` işareti çıkar. Penaltı oynayıp sonucu `tiebreakOverrides` içine **üstteki takım önde olacak şekilde** yaz:
 
 ```json
-"tiebreakOverrides": [["inter", "bayern"]],
+"tiebreakOverrides": [["inter", "atletico"]],
 ```
 
 ### Gol atanlar (elle)
@@ -77,7 +77,7 @@ Oynanan maçın `scorers` listesine yazılır (skor yine `homeGoals`/`awayGoals`
 
 ### Takım id'leri
 
-`psg`, `real`, `inter`, `bayern`, `barca`, `city`
+`psg`, `real`, `inter`, `atletico`, `barca`, `city`
 
 ## Admin modu (sitenin içinden skor girme)
 
