@@ -45,7 +45,7 @@
     {"id": "m12", "round": 4, "home": "real", "away": "barca", "venue": "Çınar", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
     {"id": "m13", "round": 5, "home": "barca", "away": "city", "venue": "Suurpelto", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
     {"id": "m14", "round": 5, "home": "inter", "away": "real", "venue": "Vermo", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
-    {"id": "m15", "round": 5, "home": "atletico", "away": "psg", "venue": "Risale", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
+    {"id": "m15", "round": 5, "home": "atletico", "away": "psg", "venue": "Vermo", "homeGoals": 4, "awayGoals": 2, "status": "oynandı", "postponedBy": null, "playedOn": "2026-11-11", "forfeitWinner": null, "scorers": []},
     {"id": "m16", "round": 6, "home": "city", "away": "psg", "venue": "Suurpelto", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
     {"id": "m17", "round": 6, "home": "atletico", "away": "real", "venue": "Risale", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
     {"id": "m18", "round": 6, "home": "inter", "away": "barca", "venue": "Vermo", "homeGoals": null, "awayGoals": null, "status": "bekliyor", "postponedBy": null, "playedOn": null, "forfeitWinner": null, "scorers": []},
